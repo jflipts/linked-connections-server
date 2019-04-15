@@ -5,6 +5,7 @@ linked_connections/
 linked_pages/
 real_time/
 node_modules/
+stops/
 package-lock.json
 datasets_config.json
 server_config.json
