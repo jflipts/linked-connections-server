@@ -1,0 +1,124 @@
+{
+  "@context":{
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "lc":"http://semweb.mmlab.be/ns/linkedconnections#",
+    "hydra":"http://www.w3.org/ns/hydra/core#",
+    "gtfs":"http://vocab.gtfs.org/terms#",
+    "tiles": "https://w3id.org/tree/terms#",
+    "Connection":"lc:Connection",
+    "CancelledConnection": "lc:CancelledConnection",
+    "arrivalTime": {
+      "@id": "lc:arrivalTime",
+      "@type": "xsd:dateTime"
+    },
+    "departureTime": {
+      "@id": "lc:departureTime",
+      "@type": "xsd:dateTime"
+    },
+    "arrivalStop": {
+      "@type": "@id",
+      "@id": "lc:arrivalStop"
+    },
+    "departureStop": {
+      "@type": "@id",
+      "@id": "lc:departureStop"
+    },
+    "departureDelay": {
+      "@id": "lc:departureDelay",
+      "@type": "xsd:integer"
+    },
+    "arrivalDelay": {
+      "@id": "lc:arrivalDelay",
+      "@type": "xsd:integer"
+    },
+    "direction": {
+      "@id": "gtfs:headsign",
+      "@type": "xsd:string"
+    },
+    "gtfs:trip": {
+      "@type": "@id"
+    },
+    "gtfs:route": {
+      "@type": "@id"
+    },
+    "gtfs:pickupType": {
+      "@type": "@id"
+    },
+    "gtfs:dropOffType": {
+      "@type": "@id"
+    },
+    "gtfs:Regular": {
+      "@type": "@id"
+    },
+    "gtfs:NotAvailable": {
+      "@type": "@id"
+    },
+    "hydra:next" : {
+      "@type":"@id"
+    },
+    "hydra:previous": {
+      "@type": "@id"
+    },
+    "hydra:up": {
+      "@type": "@id"
+    },
+    "hydra:down": {
+      "@type": "@id"
+    },
+    "hydra:left": {
+      "@type": "@id"
+    },
+    "hydra:right": {
+      "@type": "@id"
+    },
+    "hydra:property": {
+      "@type": "@id"
+    },
+    "hydra:variableRepresentation": {
+      "@type": "@id"
+    }
+  },
+  "@id":"",
+  "@type":"hydra:PartialCollectionView",
+  "tiles:zoom": "",
+  "tiles:longitudeTile": "",
+  "tiles:latitudeTile": "",
+  "hydra:next":"",
+  "hydra:previous":"",
+  "hydra:up":"",
+  "hydra:down":"",
+  "hydra:left":"",
+  "hydra:right":"",
+  "hydra:search":{
+    "@type":"hydra:IriTemplate",
+    "hydra:template":"",
+    "hydra:variableRepresentation":"hydra:BasicRepresentation",
+    "hydra:mapping": [
+      {
+        "@type":"IriTemplateMapping",
+        "hydra:variable":"departureTime",
+        "hydra:required":true,
+        "hydra:property":"lc:departureTimeQuery"
+      },
+      {
+        "@type": "hydra:IriTemplateMapping",
+        "hydra:variable": "x",
+        "hydra:property": "tiles:longitudeTile",
+        "hydra:required": true
+      },
+      {
+        "@type": "hydra:IriTemplateMapping",
+        "hydra:variable": "y",
+        "hydra:property": "tiles:latitudeTile",
+        "hydra:required": true
+      },
+      {
+        "@type":"IriTemplateMapping",
+        "hydra:variable":"zoom",
+        "hydra:required":true,
+        "hydra:property":"tiles:zoom"
+      }
+    ]
+  },
+  "@graph":[]
+}
