@@ -1,0 +1,49 @@
+{
+    "@context": {
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "lc": "http://semweb.mmlab.be/ns/linkedconnections#",
+        "hydra": "http://www.w3.org/ns/hydra/core#",
+        "tiles": "https://w3id.org/tree/terms#",
+        "tree": "https://w3id.org/tree/terms#",
+        "jeroen": "http://example.org/jeroen",
+        "hydra:search": {
+            "@type": "hydra:IriTemplate",
+            "hydra:template": "",
+            "hydra:variableRepresentation": "hydra:BasicRepresentation",
+            "hydra:mapping": [
+                {
+                    "@type": "IriTemplateMapping",
+                    "hydra:variable": "departureTime",
+                    "hydra:required": true,
+                    "hydra:property": "lc:departureTimeQuery"
+                },
+                {
+                    "@type": "hydra:IriTemplateMapping",
+                    "hydra:variable": "x",
+                    "hydra:property": "tiles:longitudeTile",
+                    "hydra:required": true
+                },
+                {
+                    "@type": "hydra:IriTemplateMapping",
+                    "hydra:variable": "y",
+                    "hydra:property": "tiles:latitudeTile",
+                    "hydra:required": true
+                },
+                {
+                    "@type": "IriTemplateMapping",
+                    "hydra:variable": "zoom",
+                    "hydra:required": true,
+                    "hydra:property": "tiles:zoom"
+                }
+            ]
+        }
+    },
+    "@id": "",
+    "@type": "tree:Node",
+    "tiles:zoom": "",
+    "tiles:longitudeTile": "",
+    "tiles:latitudeTile": "",
+    "tree:relation": [],
+    "tree:remainingItems": "",
+    "dcterms:isPartOf": ""
+}
