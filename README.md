@@ -62,6 +62,8 @@ The Web Server does not provide any functionality by itself, it needs at least o
 
 - **fragmentSize:** Defines the maximum size of every linked data fragment in bytes.
 
+- **maxPageLength [optional]:** Maximum length in milliseconds one page is allowed to be. Default = Infinity
+
 - **realTimeData:** If available, here we define all the parameters related with a GTFS-RT feed.
 
     - **downloadUrl:** Here we define the URL to download the GTFS-RT data feed.
@@ -71,6 +73,10 @@ The Web Server does not provide any functionality by itself, it needs at least o
     - **fragmentTimeSpan:** This defines the fragmentation of real-time data. It represents the time span of every fragment in seconds.
 
     - **compressionPeriod:** Cron expression that defines how often will the real-time data be compressed using gzip in order to reduce storage consumption.
+
+- **tilingStrategy [optional]:** If specified, the dataset will be tiled with Slippy tiles. For the possible values see section on Tiling Strategies.
+
+- **tilingOptions [optional]:** Tiling options for the Tiling Strategy. For allowed values check the section Tiling Strategies.
 
 - **baseURIs:** Here we define the URI templates that will be used to create the unique identifiers of each of the entities found in the Linked Connections. Is necessary to define URIs for [Connections](http://semweb.datasciencelab.be/ns/linkedconnections#Connection), [Stops](https://github.com/OpenTransport/linked-gtfs/blob/master/spec.md), [Trips](https://github.com/OpenTransport/linked-gtfs/blob/master/spec.md) and [Routes](https://github.com/OpenTransport/linked-gtfs/blob/master/spec.md). This is the only optional parameter and in case that is not defined, all base URIs will have a http://example.org/ pattern, but we recommend to always use dereferenceable URIs. Follow the [RFC 6570](https://tools.ietf.org/html/rfc6570) specification to define your URIs using the column names of the `routes` and `trips` GTFS source files. See an example next.
 
@@ -110,18 +116,42 @@ The Web Server does not provide any functionality by itself, it needs at least o
             "downloadUrl": "http://...",
             "downloadOnLaunch": false,
             "updatePeriod": "0 0 3 * * *", //every day at 3am
+            "maxPageLength": 86400000, //24hours
             "baseURIs": {
                 "stop": "http://example.org/stops/{stop_id}",
                 "route": "http://example.org/routes/{routes.route_id}",
                 "trip": "http://example.org/trips/{routes.route_id}/{trips.startTime(YYYYMMDD)}",
                 "connection:" 'http://example.org/connections/{routes.route_id}/{trips.startTime(YYYYMMDD)}{connection.departureStop}'
+            },
+            "tilingStrategy" : "multilevel",
+            "tilingOptions" : {
+                "minZoom" : 7,
+                "zoom" : 9,
+                "joinThreshold" : 200000,
+                "supportTree": true
             }
         }
     ]
 }
 ```
 
+
 Note that for defining the URI templates you can use the entity `connection` which consists of a `departureStop`, `departureTime`, `arrivalStop` and an `arrivalTime`. We have also noticed that using the start time of a trip (`trip.startTime`) is also a good practice to uniquely identify trips or even connections. If using any of the times variables you can define a specific format (see [here](https://www.w3.org/TR/NOTE-datetime)) as shown in the previous example.
+
+### Tiling Strategies
+Two different tiling strategies can be specified. If no strategy is specified, no tiling will be applied.
+
+- **onelevel:** All tiles are generated on a single level. Required tiling options:
+    - **zoom:** [number] The Slippy tiles zoom level at which the tiles are created.
+    - **supportTree [optional]:** [boolean] If the dataset should support the Tree Ontology, an internal tree of nodes will be generated
+
+- **multilevel:** Tiles are be generated on a multiple levels. Each region can only be convered by a single tile. Required tiling options:
+    - **zoom:** [number] The deepest Slippy tiles zoom level at which the tiles are created.
+    - **minZoom:** [number] The shallowest Slippy tiles zoom level at which the tiles are created.
+    - **joinThreshold:** [number] Threshold to decide if 4 tiles should be joined togheter to create a tile on a higher level. If the combined size in KB of all pages of the 4 tiles is smaller than the threshold, a new tile is created and the old ones are removed.
+    - **supportTree [optional]:** [boolean] If the dataset should support the Tree Ontology, an internal tree of nodes will be generated. This does not take into account minZoom. Levels are added until all nodes can be found from a single root node.
+
+NOTE: Tiling currently does not support Memento or Real-Time updates.
 
 ## Run it
 
@@ -144,6 +174,19 @@ http://localhost:3000/companyX/connections?departureTime=2017-08-11T16:45:00.000
 
 If available, the server will redirect you to the Linked Connections fragment that contains connections with departure times as close as possible to the one requested.
 
+### Tiling
+In case the dataset has been tiled, the root can be found by:
+```http
+http://localhost:3000/companyX/connections
+```
+Individual tiles or internal nodes of the tree are adressable by:
+```http
+http://localhost:3000/companyX/connections/:zoom/:x/:y?departureTime=
+```
+A list of all tiles is available through:
+```http
+http://localhost:3000/companyX/tiles
+```
 ## Historic Data
 
 The server also allows querying historic data by means of the [Memento Framework](https://tools.ietf.org/html/rfc7089) which enables time-based content negotiation over HTTP. By using the **Accept-Datetime** header a client can request the state of a resource at a given moment. If existing, the server will respond with a 302 Found containing the URI of the stored version of such resource. For example:
@@ -189,5 +232,8 @@ The previous example shows a request made to obtain the Connections fragment ide
 
 ## Authors
 
-Julian Rojas - julianandres.rojasmelendez@ugent.be  
-Pieter Colpaert - pieter.colpaert@ugent.be  
+Julian Rojas - julianandres.rojasmelendez@ugent.be
+Pieter Colpaert - pieter.colpaert@ugent.be
+
+### Tiling
+Jeroen Flipts - jeroen.flipts@ugent.be
