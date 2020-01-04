@@ -5,67 +5,73 @@
         "hydra": "http://www.w3.org/ns/hydra/core#",
         "tiles": "https://w3id.org/tree/terms#",
         "tree": "https://w3id.org/tree/terms#",
-        "hydra:search": {}
+        "geosparql": "http://www.opengis.net/ont/geosparql#"
     },
-    "@id": "http://localhost:3000/nmbs-tiled/connections/11/1056/694",
+    "@id": "http:/localhost:3000/nmbs-small-tiled-tree/connections/6/32/21",
     "@type": "tree:Node",
-    "tiles:zoom": "11",
-    "tiles:longitudeTile": "1056",
-    "tiles:latitudeTile": "694",
+    "tiles:zoom": 6,
+    "tiles:longitudeTile": 32,
+    "tiles:latitudeTile": 21,
     "tree:relation": [
         {
             "@type": "tree:GeospatiallyContainsRelation",
             "tree:node": {
-                "@id": "http://localhost:3000/nmbs-tiled/connections/12/2112/1388"
+                "@id": "http:/localhost:3000/nmbs-small-tiled-tree/connections/7/65/42"
             },
-            "shacl:path": "lc:departureStop",
+            "tree:path": [
+                "lc:departureStop",
+                "geosparql:asWKT"
+            ],
             "tree:value": {
                 "@type": "tree:Node",
-                "tiles:zoom": "12",
-                "tiles:longitudeTile": "2112",
-                "tiles:latitudeTile": "1388"
+                "geosparql:asWKT": "POLYGON((2.8125 52.48278022207821, 5.625 52.48278022207821, 5.625 50.73645513701065, 2.8125 50.73645513701065))"
             }
         },
         {
             "@type": "tree:GeospatiallyContainsRelation",
             "tree:node": {
-                "@id": "http://localhost:3000/nmbs-tiled/connections/12/2112/1389"
+                "@id": "http:/localhost:3000/nmbs-small-tiled-tree/connections/7/65/43"
             },
-            "shacl:path": "lc:departureStop",
+            "tree:path": [
+                "lc:departureStop",
+                "geosparql:asWKT"
+            ],
             "tree:value": {
                 "@type": "tree:Node",
-                "tiles:zoom": "12",
-                "tiles:longitudeTile": "2112",
-                "tiles:latitudeTile": "1389"
-            }
-        },
-        {
-            "@type": "tree:GeospatiallyContainsRelation",
-            "tree:node": {
-                "@id": "http://localhost:3000/nmbs-tiled/connections/12/2113/1388"
-            },
-            "shacl:path": "lc:departureStop",
-            "tree:value": {
-                "@type": "tree:Node",
-                "tiles:zoom": "12",
-                "tiles:longitudeTile": "2113",
-                "tiles:latitudeTile": "1388"
-            }
-        },
-        {
-            "@type": "tree:GeospatiallyContainsRelation",
-            "tree:node": {
-                "@id": "http://localhost:3000/nmbs-tiled/connections/12/2113/1389"
-            },
-            "shacl:path": "lc:departureStop",
-            "tree:value": {
-                "@type": "tree:Node",
-                "tiles:zoom": "12",
-                "tiles:longitudeTile": "2113",
-                "tiles:latitudeTile": "1389"
+                "geosparql:asWKT": "POLYGON((2.8125 50.73645513701065, 5.625 50.73645513701065, 5.625 48.922499263758255, 2.8125 48.922499263758255))"
             }
         }
     ],
-    "tree:remainingItems": "6",
-    "dcterms:isPartOf": "http://localhost:3000/nmbs-tiled/connections"
+    "tree:view": "http:/localhost:3000/nmbs-small-tiled-tree/connections",
+    "hydra:search": {
+        "@type": "hydra:IriTemplate",
+        "hydra:template": "http://localhost:3000/nmbs-small-tiled-tree/connections/{zoom}/{x}/{y}{?departureTime}",
+        "hydra:variableRepresentation": "hydra:BasicRepresentation",
+        "hydra:mapping": [
+            {
+                "@type": "IriTemplateMapping",
+                "hydra:variable": "departureTime",
+                "hydra:required": true,
+                "hydra:property": "lc:departureTimeQuery"
+            },
+            {
+                "@type": "hydra:IriTemplateMapping",
+                "hydra:variable": "x",
+                "hydra:property": "tiles:longitudeTile",
+                "hydra:required": true
+            },
+            {
+                "@type": "hydra:IriTemplateMapping",
+                "hydra:variable": "y",
+                "hydra:property": "tiles:latitudeTile",
+                "hydra:required": true
+            },
+            {
+                "@type": "IriTemplateMapping",
+                "hydra:variable": "zoom",
+                "hydra:required": true,
+                "hydra:property": "tiles:zoom"
+            }
+        ]
+    }
 }
